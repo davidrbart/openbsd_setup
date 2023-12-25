@@ -1,0 +1,3 @@
+wsfontload -h 8 -e ibm /usr/share/misc/pcvtfonts/vt220h.808
+wsconscfg -dF 5
+wsconscfg -t 80x50 5

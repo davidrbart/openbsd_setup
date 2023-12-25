@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# rm -rf /etc/skel/.*
+# mkdir -p /etc/skel/.{cache,local/share}
+
+# pkg_add -l installed
+# rcctl enable {apmd,cupsd,hotplugd,xenodm}
+
+# password=$(encrypt -p)
+# useradd -m -G wheel,staff,_saned -p $password david
+
+for config in $(find configs -type f | sed 's|configs/||g')
+do
+    cat "configs/${config}" > "/etc/${config}"
+    # grep '#!/bin/sh' configs/$config && chmod +x /etc/$config
+done
+
+xenodm_xsession=/etc/X11/xenodm/Xsession
+# sed -i 's|.xsession-errors|.cache/.xsession-errors|g' $xenodm_xsession
+# sed -i 's|.xsession|.config/x11/.xsession|g' $xenodm_xsession
+# sed -i 's|.Xresources|.config/x11/.xresources|g' $xenodm_xsession
+
+# sed -i 's/rw/rw,noatime,softdep/g' '/etc/fstab'
+
+# TODO custom setup
+# lesskey ${XDG_CONFIG_HOME}/less/lesskey
+# chmod 550 ~
+# mkdir -p .cache/mutt
+
+doas mkdir '/var/spool/output/brother'
+doas chown -R 'root:daemon' '/var/spool/output/brother'
+chmod 770 '/var/spool/output/brother'
