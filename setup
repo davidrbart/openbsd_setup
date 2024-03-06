@@ -1,32 +1,35 @@
 #!/bin/sh
 
-# rm -rf /etc/skel/.*
-# mkdir -p /etc/skel/.{cache,local/share}
+# let me guess - you *need* more?
+pkg_add -l installed
 
-# pkg_add -l installed
-# rcctl enable {apmd,cupsd,hotplugd,xenodm}
+# enable battery managamenet and display manager
+rcctl enable {apmd,xenodm}
 
-# password=$(encrypt -p)
-# useradd -m -G wheel,staff,_saned -p $password david
+# create default user with group memberships
+password=$(encrypt -p)
+useradd -m -G wheel,staff -p $password david
 
+# move custom config files into /etc/
 for config in $(find configs -type f | sed 's|configs/||g')
 do
     cat "configs/${config}" > "/etc/${config}"
-    # grep '#!/bin/sh' configs/$config && chmod +x /etc/$config
 done
 
+chmod +x '/etc/X11/xenodm/Xsetup_0'
+
+# move x11 files into xdg compatible folders
 xenodm_xsession=/etc/X11/xenodm/Xsession
-# sed -i 's|.xsession-errors|.cache/.xsession-errors|g' $xenodm_xsession
-# sed -i 's|.xsession|.config/x11/.xsession|g' $xenodm_xsession
-# sed -i 's|.Xresources|.config/x11/.xresources|g' $xenodm_xsession
+sed -i 's|.xsession-errors|.cache/.xsession-errors|g' $xenodm_xsession
+sed -i 's|.xsession|.config/x11/.xsession|g' $xenodm_xsession
+sed -i 's|.Xresources|.config/x11/.xresources|g' $xenodm_xsession
 
-# sed -i 's/rw/rw,noatime,softdep/g' '/etc/fstab'
+# don't update atime in files
+sed -i 's/rw/rw,noatime,softdep/g' '/etc/fstab'
 
-# TODO custom setup
-# lesskey ${XDG_CONFIG_HOME}/less/lesskey
-# chmod 550 ~
-# mkdir -p .cache/mutt
-
+# create spool file for printer
 doas mkdir '/var/spool/output/brother'
 doas chown -R 'root:daemon' '/var/spool/output/brother'
 chmod 770 '/var/spool/output/brother'
+# create error log for printer
+touch '/var/log/lpd-errors'
