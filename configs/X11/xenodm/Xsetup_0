@@ -1,4 +1,4 @@
 #!/bin/sh
 
-xsetroot -solid '#151515'
+xsetroot -solid '#d0d0d0'
 xset b off
