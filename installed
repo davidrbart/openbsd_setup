@@ -1,7 +1,6 @@
 cdparanoia--
 chromium--
 enscript--
-entr--
 ffmpeg--
 fzf--
 ghostscript--a4-no_x11
@@ -10,8 +9,7 @@ groff--
 kakoune--
 lynx--
 moreutils--
-mutt--
-newsraft--
+mutt--sasl
 oath-toolkit--
 psutils--
 quirks--
@@ -23,4 +21,3 @@ xdotool--
 xli--
 xpdf--
 yt-dlp--
-zip--
