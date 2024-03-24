@@ -16,12 +16,6 @@ do
     cat "configs/${config}" > "/etc/${config}"
 done
 
-# move x11 files into xdg compatible folders
-xenodm_xsession=/etc/X11/xenodm/Xsession
-sed -i 's|.xsession-errors|.cache/.xsession-errors|g' $xenodm_xsession
-sed -i 's|.xsession|.config/x11/.xsession|g' $xenodm_xsession
-sed -i 's|.Xresources|.config/x11/.xresources|g' $xenodm_xsession
-
 # don't update atime in files
 sed -i 's/rw/rw,noatime,softdep/g' '/etc/fstab'
 
